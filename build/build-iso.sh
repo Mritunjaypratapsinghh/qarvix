@@ -131,6 +131,20 @@ apply_branding() {
     mkdir -p "$ROOTFS/etc/qarvix"
     cp "${PROJECT_ROOT}/branding/motd" "$ROOTFS/etc/motd" 2>/dev/null || true
     cp "${PROJECT_ROOT}/branding/os-release" "$ROOTFS/etc/os-release" 2>/dev/null || true
+
+    # Install Rust tools if available
+    for bin in qarvix-ctl qarvix-dev; do
+        if [[ -f "/usr/local/bin/$bin" ]]; then
+            cp "/usr/local/bin/$bin" "$ROOTFS/usr/local/bin/"
+        elif [[ -f "${PROJECT_ROOT}/qarvix-tools/target/release/$bin" ]]; then
+            cp "${PROJECT_ROOT}/qarvix-tools/target/release/$bin" "$ROOTFS/usr/local/bin/"
+        fi
+    done
+    chmod +x "$ROOTFS/usr/local/bin/qarvix-"* 2>/dev/null || true
+
+    # Auto-update daemon
+    cp "${PROJECT_ROOT}/build/qarvix-autoupdate" "$ROOTFS/usr/local/bin/" 2>/dev/null || true
+    chmod +x "$ROOTFS/usr/local/bin/qarvix-autoupdate" 2>/dev/null || true
 }
 
 build_iso() {

@@ -1,0 +1,4 @@
+out/
+qarvix-tools/target/
+.git/
+*.iso
