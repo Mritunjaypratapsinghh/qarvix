@@ -1,16 +1,14 @@
 # Qarvix ISO Build Environment
 FROM voidlinux/voidlinux:latest
 
-# Install build dependencies
-RUN xbps-install -Syu -y && \
+# Fix stale SSL certs, update repos, install build deps
+RUN mkdir -p /etc/xbps.d && \
+    echo "repository=https://repo-default.voidlinux.org/current" > /etc/xbps.d/00-repository-main.conf && \
+    xbps-install -SMyu -y xbps ca-certificates || true && \
+    xbps-install -Syu -y && \
     xbps-install -y \
-    xorriso \
-    squashfs-tools \
-    grub-x86_64-efi \
-    grub-i386-pc \
-    curl \
-    git \
-    bash \
+    xorriso squashfs-tools grub-x86_64-efi grub \
+    curl git bash gcc make pkg-config \
     && rm -rf /var/cache/xbps
 
 # Install Rust

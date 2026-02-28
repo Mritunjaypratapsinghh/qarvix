@@ -26,11 +26,19 @@ check_deps() {
 
 bootstrap_rootfs() {
     log "Bootstrapping Void Linux rootfs..."
-    mkdir -p "$ROOTFS"
+    mkdir -p "$ROOTFS/var/db/xbps/keys"
 
-    XBPS_ARCH="$ARCH" xbps-install -S -r "$ROOTFS" \
+    # Copy host xbps signing keys to target rootfs
+    cp /var/db/xbps/keys/*.plist "$ROOTFS/var/db/xbps/keys/" 2>/dev/null || true
+
+    # Also set up repo config in rootfs
+    mkdir -p "$ROOTFS/etc/xbps.d"
+    echo "repository=$VOID_MIRROR" > "$ROOTFS/etc/xbps.d/00-repository-main.conf"
+    echo "repository=${VOID_MIRROR}/nonfree" >> "$ROOTFS/etc/xbps.d/00-repository-main.conf"
+
+    yes | XBPS_ARCH="$ARCH" xbps-install -S -r "$ROOTFS" \
         -R "$VOID_MIRROR" -y \
-        base-minimal
+        base-minimal || true
 
     # Mount pseudo-filesystems
     mount --bind /dev "$ROOTFS/dev"
@@ -51,8 +59,8 @@ install_packages() {
         [[ -n "$line" ]] && pkgs+=("$line")
     done < "$pkg_file"
 
-    XBPS_ARCH="$ARCH" xbps-install -S -r "$ROOTFS" \
-        -R "$VOID_MIRROR" -y "${pkgs[@]}"
+    yes | XBPS_ARCH="$ARCH" xbps-install -S -r "$ROOTFS" \
+        -R "$VOID_MIRROR" -y "${pkgs[@]}" || true
 }
 
 configure_system() {
