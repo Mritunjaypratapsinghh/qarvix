@@ -2,10 +2,14 @@ use anyhow::{Context, Result};
 use clap::{Parser, Subcommand};
 use colored::Colorize;
 use serde::Deserialize;
-use std::{collections::HashMap, fs, path::Path, process::Command};
+use std::{collections::HashMap, fs, process::Command};
 
 #[derive(Parser)]
-#[command(name = "qarvix-dev", about = "Qarvix developer environment manager", version)]
+#[command(
+    name = "qarvix-dev",
+    about = "Qarvix developer environment manager",
+    version
+)]
 struct Cli {
     #[command(subcommand)]
     cmd: Cmd,
@@ -77,7 +81,11 @@ fn templates() -> Result<()> {
 }
 
 fn init(name: &str, template: &str) -> Result<()> {
-    println!("Creating {} with {} template...", name.cyan(), template.green());
+    println!(
+        "Creating {} with {} template...",
+        name.cyan(),
+        template.green()
+    );
 
     fs::create_dir_all(name)?;
 
@@ -138,9 +146,8 @@ fn init_python(name: &str) -> Result<()> {
 }
 
 fn init_go(name: &str) -> Result<()> {
-    let main = format!(
-        "package main\n\nimport \"fmt\"\n\nfunc main() {{\n\tfmt.Println(\"⚡ Qarvix\")\n}}\n"
-    );
+    let main = "package main\n\nimport \"fmt\"\n\nfunc main() {\n\tfmt.Println(\"⚡ Qarvix\")\n}\n"
+        .to_string();
     fs::write(format!("{name}/main.go"), main)?;
     exec("go", &["mod", "init", name]).ok();
     Ok(())
@@ -154,32 +161,33 @@ fn up(config_path: &str) -> Result<()> {
     println!("{} Starting {}...", "⚡".green(), config.name.cyan());
 
     for (svc_name, svc) in &config.services {
-        let mut args = vec!["run", "-d", "--name", &format!("qarvix-{}", svc_name)];
+        let container_name = format!("qarvix-{}", svc_name);
+        let mut args: Vec<String> =
+            vec!["run".into(), "-d".into(), "--name".into(), container_name];
 
         if let Some(ports) = &svc.ports {
             for p in ports {
-                args.push("-p");
-                args.push(p);
+                args.push("-p".into());
+                args.push(p.clone());
             }
         }
         if let Some(volumes) = &svc.volumes {
             for v in volumes {
-                args.push("-v");
-                args.push(v);
+                args.push("-v".into());
+                args.push(v.clone());
             }
         }
         if let Some(env) = &svc.env {
             for (k, v) in env {
-                args.push("-e");
-                let env_str = format!("{k}={v}");
-                // Leak is fine here - short-lived CLI
-                args.push(Box::leak(env_str.into_boxed_str()));
+                args.push("-e".into());
+                args.push(format!("{k}={v}"));
             }
         }
-        args.push(&svc.image);
+        args.push(svc.image.clone());
 
+        let arg_refs: Vec<&str> = args.iter().map(|s| s.as_str()).collect();
         println!("  {} {}", "↑".green(), svc_name.cyan());
-        exec("docker", &args)?;
+        exec("docker", &arg_refs)?;
     }
 
     println!("{}", "Dev environment running.".green());
@@ -188,7 +196,17 @@ fn up(config_path: &str) -> Result<()> {
 
 fn down() -> Result<()> {
     println!("{}", "Stopping dev environment...".yellow());
-    let out = exec("docker", &["ps", "-a", "--filter", "name=qarvix-", "--format", "{{.Names}}"])?;
+    let out = exec(
+        "docker",
+        &[
+            "ps",
+            "-a",
+            "--filter",
+            "name=qarvix-",
+            "--format",
+            "{{.Names}}",
+        ],
+    )?;
     for name in out.lines() {
         if !name.is_empty() {
             exec("docker", &["rm", "-f", name])?;
@@ -203,7 +221,14 @@ fn status() -> Result<()> {
     println!("{}", "Dev containers:".bold());
     let out = exec(
         "docker",
-        &["ps", "-a", "--filter", "name=qarvix-", "--format", "table {{.Names}}\t{{.Status}}\t{{.Ports}}"],
+        &[
+            "ps",
+            "-a",
+            "--filter",
+            "name=qarvix-",
+            "--format",
+            "table {{.Names}}\t{{.Status}}\t{{.Ports}}",
+        ],
     )?;
     if out.is_empty() {
         println!("  No running environments. Run `qarvix-dev up`");
@@ -214,7 +239,9 @@ fn status() -> Result<()> {
 }
 
 fn exec(cmd: &str, args: &[&str]) -> Result<String> {
-    let output = Command::new(cmd).args(args).output()
+    let output = Command::new(cmd)
+        .args(args)
+        .output()
         .with_context(|| format!("failed to run: {cmd}"))?;
     Ok(String::from_utf8_lossy(&output.stdout).trim().to_string())
 }

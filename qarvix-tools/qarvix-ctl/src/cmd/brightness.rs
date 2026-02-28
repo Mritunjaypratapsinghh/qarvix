@@ -16,9 +16,15 @@ enum Cmd {
     /// Set brightness (0-100)
     Set { value: u8 },
     /// Increase brightness
-    Up { #[arg(default_value = "5")] step: u8 },
+    Up {
+        #[arg(default_value = "5")]
+        step: u8,
+    },
     /// Decrease brightness
-    Down { #[arg(default_value = "5")] step: u8 },
+    Down {
+        #[arg(default_value = "5")]
+        step: u8,
+    },
 }
 
 pub fn run(args: Args) -> Result<()> {

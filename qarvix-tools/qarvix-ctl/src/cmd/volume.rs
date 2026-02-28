@@ -16,9 +16,15 @@ enum Cmd {
     /// Set volume (0-100)
     Set { value: u8 },
     /// Increase volume
-    Up { #[arg(default_value = "5")] step: u8 },
+    Up {
+        #[arg(default_value = "5")]
+        step: u8,
+    },
     /// Decrease volume
-    Down { #[arg(default_value = "5")] step: u8 },
+    Down {
+        #[arg(default_value = "5")]
+        step: u8,
+    },
     /// Toggle mute
     Mute,
 }

@@ -33,7 +33,10 @@ pub fn run(args: Args) -> Result<()> {
 
 fn status() -> Result<()> {
     let gov = fs::read_to_string(GOV_PATH)?.trim().to_string();
-    let epp = fs::read_to_string(EPP_PATH).unwrap_or_default().trim().to_string();
+    let epp = fs::read_to_string(EPP_PATH)
+        .unwrap_or_default()
+        .trim()
+        .to_string();
     println!("{} {}", "Governor:".bold(), gov.cyan());
     if !epp.is_empty() {
         println!("{} {}", "Energy pref:".bold(), epp.cyan());
