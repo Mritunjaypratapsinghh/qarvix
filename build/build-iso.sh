@@ -74,8 +74,33 @@ configure_system() {
     cp "${PROJECT_ROOT}/config/kernel/cmdline.conf" "$ROOTFS/etc/default/grub.d/" 2>/dev/null || true
     cp "${PROJECT_ROOT}/config/macbook/"* "$ROOTFS/etc/modprobe.d/" 2>/dev/null || true
 
+    # Greetd login manager
+    mkdir -p "$ROOTFS/etc/greetd"
+    cp "${PROJECT_ROOT}/config/greetd/config.toml" "$ROOTFS/etc/greetd/"
+
+    # Foot terminal
+    mkdir -p "$ROOTFS/etc/xdg/foot"
+    cp "${PROJECT_ROOT}/config/foot/foot.ini" "$ROOTFS/etc/xdg/foot/"
+
+    # GTK theme
+    mkdir -p "$ROOTFS/etc/gtk-3.0"
+    cp "${PROJECT_ROOT}/config/gtk-3.0/settings.ini" "$ROOTFS/etc/gtk-3.0/"
+
+    # Neovim
+    mkdir -p "$ROOTFS/etc/xdg/nvim"
+    cp "${PROJECT_ROOT}/config/nvim/init.lua" "$ROOTFS/etc/xdg/nvim/"
+
+    # Zsh + Starship
+    cp "${PROJECT_ROOT}/config/zsh/.zshrc" "$ROOTFS/etc/skel/.zshrc"
+    mkdir -p "$ROOTFS/etc/xdg"
+    cp "${PROJECT_ROOT}/config/zsh/starship.toml" "$ROOTFS/etc/xdg/starship.toml"
+
+    # GRUB theme
+    mkdir -p "$ROOTFS/boot/grub/themes/qarvix"
+    cp "${PROJECT_ROOT}/config/grub-theme/theme.txt" "$ROOTFS/boot/grub/themes/qarvix/"
+
     # Enable runit services
-    for svc in iwd dhcpcd dbus pipewire seatd; do
+    for svc in iwd dhcpcd dbus pipewire seatd greetd; do
         ln -sf "/etc/sv/$svc" "$ROOTFS/etc/runit/runsvdir/default/" 2>/dev/null || true
     done
 
@@ -85,9 +110,10 @@ configure_system() {
     # GRUB config
     cat > "$ROOTFS/etc/default/grub" <<'GRUB'
 GRUB_DEFAULT=0
-GRUB_TIMEOUT=1
+GRUB_TIMEOUT=3
 GRUB_DISTRIBUTOR="Qarvix"
 GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=3 i915.enable_psr=1 i915.enable_fbc=1"
+GRUB_THEME="/boot/grub/themes/qarvix/theme.txt"
 GRUB
 
 }

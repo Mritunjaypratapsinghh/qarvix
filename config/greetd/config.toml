@@ -1,0 +1,6 @@
+[terminal]
+vt = 1
+
+[default_session]
+command = "tuigreet --time --remember --remember-session --greeting '⚡ Qarvix' --theme 'border=blue;text=white;prompt=cyan;time=gray;action=magenta;button=yellow;container=black' --cmd sway"
+user = "greeter"

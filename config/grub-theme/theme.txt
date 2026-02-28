@@ -1,0 +1,58 @@
+# Qarvix GRUB Theme
+
+# Global
+title-text: ""
+desktop-color: "#1a1b26"
+message-font: "Fira Code Regular 14"
+message-color: "#c0caf5"
+terminal-font: "Fira Code Regular 14"
+
+# Boot menu
++ boot_menu {
+    left = 30%
+    top = 35%
+    width = 40%
+    height = 40%
+    item_font = "Fira Code Regular 16"
+    item_color = "#565f89"
+    selected_item_font = "Fira Code Bold 16"
+    selected_item_color = "#7aa2f7"
+    item_height = 36
+    item_padding = 8
+    item_spacing = 4
+    selected_item_pixmap_style = "select_*.png"
+}
+
+# Title label
++ label {
+    left = 30%
+    top = 22%
+    width = 40%
+    align = "center"
+    text = "⚡ Qarvix"
+    font = "Fira Code Bold 28"
+    color = "#7aa2f7"
+}
+
+# Version label
++ label {
+    left = 30%
+    top = 28%
+    width = 40%
+    align = "center"
+    text = "v0.1.0 Genesis"
+    font = "Fira Code Regular 12"
+    color = "#565f89"
+}
+
+# Countdown
++ label {
+    left = 30%
+    top = 80%
+    width = 40%
+    align = "center"
+    id = "__timeout__"
+    text = "Booting in %d seconds"
+    font = "Fira Code Regular 12"
+    color = "#565f89"
+}
