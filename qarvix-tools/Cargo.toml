@@ -1,0 +1,3 @@
+[workspace]
+members = ["qarvix-ctl"]
+resolver = "2"

@@ -1,0 +1,7 @@
+NAME="Qarvix"
+ID=qarvix
+VERSION="0.1.0"
+VERSION_CODENAME="genesis"
+PRETTY_NAME="Qarvix 0.1.0 (Genesis)"
+HOME_URL="https://github.com/qarvix"
+BUG_REPORT_URL="https://github.com/qarvix/qarvix/issues"
