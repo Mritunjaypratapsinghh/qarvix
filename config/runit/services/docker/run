@@ -1,0 +1,2 @@
+#!/bin/sh
+exec dockerd --iptables=false 2>&1

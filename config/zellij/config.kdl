@@ -1,0 +1,62 @@
+// Qarvix Zellij Config
+keybinds clear-defaults=true {
+    normal {
+        bind "Alt h" { MoveFocusOrTab "Left"; }
+        bind "Alt l" { MoveFocusOrTab "Right"; }
+        bind "Alt j" { MoveFocus "Down"; }
+        bind "Alt k" { MoveFocus "Up"; }
+        bind "Alt n" { NewPane; }
+        bind "Alt d" { NewPane "Down"; }
+        bind "Alt r" { NewPane "Right"; }
+        bind "Alt w" { CloseFocus; }
+        bind "Alt t" { NewTab; }
+        bind "Alt 1" { GoToTab 1; }
+        bind "Alt 2" { GoToTab 2; }
+        bind "Alt 3" { GoToTab 3; }
+        bind "Alt 4" { GoToTab 4; }
+        bind "Alt 5" { GoToTab 5; }
+        bind "Alt f" { ToggleFocusFullscreen; }
+        bind "Alt z" { TogglePaneFrames; }
+        bind "Alt q" { Detach; }
+        bind "Ctrl a" { SwitchToMode "tmux"; }
+    }
+    tmux {
+        bind "Esc" { SwitchToMode "Normal"; }
+        bind "h" { Resize "Increase Left"; }
+        bind "j" { Resize "Increase Down"; }
+        bind "k" { Resize "Increase Up"; }
+        bind "l" { Resize "Increase Right"; }
+        bind "[" { SwitchToMode "Scroll"; }
+    }
+    scroll {
+        bind "Esc" { SwitchToMode "Normal"; }
+        bind "j" { ScrollDown; }
+        bind "k" { ScrollUp; }
+        bind "d" { HalfPageScrollDown; }
+        bind "u" { HalfPageScrollUp; }
+    }
+}
+
+theme "qarvix"
+themes {
+    qarvix {
+        fg "#c0caf5"
+        bg "#1a1b26"
+        black "#15161e"
+        red "#f7768e"
+        green "#9ece6a"
+        yellow "#e0af68"
+        blue "#7aa2f7"
+        magenta "#bb9af7"
+        cyan "#7dcfff"
+        white "#a9b1d6"
+        orange "#ff9e64"
+    }
+}
+
+default_layout "compact"
+pane_frames false
+default_shell "zsh"
+scrollback_editor "nvim"
+copy_on_select true
+mouse_mode true

@@ -1,3 +1,3 @@
 [workspace]
-members = ["qarvix-ctl"]
+members = ["qarvix-ctl", "qarvix-dev"]
 resolver = "2"

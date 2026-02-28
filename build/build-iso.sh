@@ -99,8 +99,16 @@ configure_system() {
     mkdir -p "$ROOTFS/boot/grub/themes/qarvix"
     cp "${PROJECT_ROOT}/config/grub-theme/theme.txt" "$ROOTFS/boot/grub/themes/qarvix/"
 
+    # Zellij
+    mkdir -p "$ROOTFS/etc/xdg/zellij"
+    cp "${PROJECT_ROOT}/config/zellij/config.kdl" "$ROOTFS/etc/xdg/zellij/"
+
+    # Git config
+    mkdir -p "$ROOTFS/etc/skel"
+    cp "${PROJECT_ROOT}/config/git/gitconfig" "$ROOTFS/etc/skel/.gitconfig"
+
     # Enable runit services
-    for svc in iwd dhcpcd dbus pipewire seatd greetd; do
+    for svc in iwd dhcpcd dbus pipewire seatd greetd docker; do
         ln -sf "/etc/sv/$svc" "$ROOTFS/etc/runit/runsvdir/default/" 2>/dev/null || true
     done
 
