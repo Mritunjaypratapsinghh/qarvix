@@ -97,29 +97,33 @@ A lightweight Linux distro that makes a MacBook Air 2017 feel brand new.
   - [ ] Theme selection
   - [ ] Keyboard layout
 
-### Phase 3: Desktop Polish
-- [ ] Custom GRUB theme (Qarvix splash)
-- [ ] Login manager (greetd + tuigreet)
-- [ ] GTK theme (dark, consistent)
+### Phase 3: Desktop Polish ✅
+- [x] Custom GRUB theme (Qarvix splash)
+- [x] Login manager (greetd + tuigreet)
+- [x] GTK theme (dark, consistent)
+- [x] Notification styling (mako)
+- [x] Swaylock theme
+- [x] Font rendering optimization
 - [ ] Custom wallpapers
-- [ ] Notification styling (mako)
-- [ ] Swaylock theme
-- [ ] Font rendering optimization
 - [ ] Auto-detect MacBook model
 
-### Phase 4: Developer Experience
-- [ ] Pre-installed dev tools (git, neovim, docker, rust)
-- [ ] `qarvix-dev` command for dev environments
-- [ ] Zellij (terminal multiplexer) config
-- [ ] Neovim config (LSP, treesitter, minimal)
+### Phase 4: Developer Experience ✅
+- [x] Pre-installed dev tools (git, neovim, docker, rust, node, python, go)
+- [x] `qarvix-dev` command for dev environments
+- [x] Zellij (terminal multiplexer) config
+- [x] Neovim config (LSP, treesitter, telescope, autocomplete)
+- [x] Git config (delta, aliases)
 
 ### Phase 5: Distribution
-- [ ] GitHub releases with ISO downloads
+- [x] GitHub Actions CI (shellcheck, cargo fmt, clippy, build)
+- [x] GitHub release workflow (ISO build + binary release on tag)
+- [x] Documentation site (docs/)
+- [x] CONTRIBUTING.md
+- [x] LICENSE (MIT)
+- [x] Auto-update daemon (daily check, desktop notification)
 - [ ] Website (qarvix.dev)
-- [ ] Documentation site
-- [ ] Auto-update system
-- [ ] Community channels (Discord/Matrix)
 - [ ] DistroWatch submission
+- [ ] Community channels (Discord/Matrix)
 
 ## Priority Order
 

@@ -1,0 +1,3 @@
+#!/bin/sh
+# Qarvix auto-update: checks daily, notifies user
+exec chpst -u root /usr/local/bin/qarvix-autoupdate

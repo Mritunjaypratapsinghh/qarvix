@@ -1,0 +1,30 @@
+#!/bin/bash
+# Qarvix Auto-Update Daemon
+# Checks for updates daily and notifies the user
+set -euo pipefail
+
+INTERVAL=86400  # 24 hours
+LOG="/var/log/qarvix-update.log"
+
+log() { echo "$(date -Iseconds) $*" >> "$LOG"; }
+
+while true; do
+    log "Checking for updates..."
+
+    updates=$(xbps-install -Sun 2>/dev/null | wc -l)
+
+    if [[ "$updates" -gt 0 ]]; then
+        log "$updates updates available"
+        # Notify via mako (if user session exists)
+        if pgrep -x sway > /dev/null; then
+            su - "$(logname 2>/dev/null || echo root)" -c \
+                "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u $(logname 2>/dev/null || echo root))/bus \
+                notify-send '⚡ Qarvix Update' '$updates updates available. Run: qarvix-ctl update install'" \
+                2>/dev/null || true
+        fi
+    else
+        log "System up to date"
+    fi
+
+    sleep "$INTERVAL"
+done
